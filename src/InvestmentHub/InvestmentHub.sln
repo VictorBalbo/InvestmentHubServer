@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.ConsoleApplication", "InvestmentHub.ConsoleApplication\InvestmentHub.ConsoleApplication.csproj", "{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{1EADF3E7-8787-43BF-BB05-F47F9CD279B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rico", "Rico", "{8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Rico", "Providers\Rico\InvestmentHub.Providers.Rico\InvestmentHub.Providers.Rico.csproj", "{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models.Rico", "Providers\Rico\InvestmentHub.Providers.Models.Rico\InvestmentHub.Providers.Models.Rico.csproj", "{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers", "Providers\InvestmentHub.Providers\InvestmentHub.Providers.csproj", "{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models", "Providers\InvestmentHub.Providers.Models\InvestmentHub.Providers.Models.csproj", "{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
+		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3} = {8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE}
+		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE} = {8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE}
+		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
+		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70C53D03-F56B-465D-BC43-0386B1305CDA}
+	EndGlobalSection
+EndGlobal

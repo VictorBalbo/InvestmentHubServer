@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+    <LangVersion>8.0</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\InvestmentHub.Providers.Models\InvestmentHub.Providers.Models.csproj" />
+    <ProjectReference Include="..\..\InvestmentHub.Providers\InvestmentHub.Providers.csproj" />
+    <ProjectReference Include="..\InvestmentHub.Providers.Models.Rico\InvestmentHub.Providers.Models.Rico.csproj" />
+  </ItemGroup>
+
+</Project>
