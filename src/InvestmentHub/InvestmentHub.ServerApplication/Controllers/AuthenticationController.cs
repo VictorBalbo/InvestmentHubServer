@@ -75,13 +75,6 @@ namespace InvestmentHub.ServerApplication.Controllers
             });
         }
 
-        [HttpPost("logout")]
-        public Task<IActionResult> Logout([FromBody]Account account, CancellationToken cancellationToken)
-        {
-            ///TODO: Implement logout
-            throw new NotImplementedException();
-        }
-
         private string GetAuthToken(Account account)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

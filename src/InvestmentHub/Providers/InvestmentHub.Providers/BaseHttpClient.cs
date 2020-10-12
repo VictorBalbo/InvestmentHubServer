@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +13,7 @@ namespace InvestmentHub.Providers
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _serializerOptions;
 
-        public BaseHttpClient()
+        protected BaseHttpClient()
         {
             _httpClient = new HttpClient();
             _serializerOptions = new JsonSerializerOptions
