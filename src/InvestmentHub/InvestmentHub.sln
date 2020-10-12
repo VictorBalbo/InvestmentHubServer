@@ -3,19 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.ConsoleApplication", "InvestmentHub.ConsoleApplication\InvestmentHub.ConsoleApplication.csproj", "{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{1EADF3E7-8787-43BF-BB05-F47F9CD279B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rico", "Rico", "{8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Rico", "Providers\Rico\InvestmentHub.Providers.Rico\InvestmentHub.Providers.Rico.csproj", "{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers.Rico", "Providers\Rico\InvestmentHub.Providers.Rico\InvestmentHub.Providers.Rico.csproj", "{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models.Rico", "Providers\Rico\InvestmentHub.Providers.Models.Rico\InvestmentHub.Providers.Models.Rico.csproj", "{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers.Models.Rico", "Providers\Rico\InvestmentHub.Providers.Models.Rico\InvestmentHub.Providers.Models.Rico.csproj", "{3E2A583C-D24C-4595-8CA1-8AF080AF99FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers", "Providers\InvestmentHub.Providers\InvestmentHub.Providers.csproj", "{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers", "Providers\InvestmentHub.Providers\InvestmentHub.Providers.csproj", "{047FEF8E-F3F2-4D41-9C4F-C0A13080669C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models", "Providers\InvestmentHub.Providers.Models\InvestmentHub.Providers.Models.csproj", "{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers.Models", "Providers\InvestmentHub.Providers.Models\InvestmentHub.Providers.Models.csproj", "{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nubank", "Nubank", "{222385C0-8F16-461A-A01E-BF3AA424D0E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Models", "InvestmentHub.Models\InvestmentHub.Models.csproj", "{00F326D0-79FE-4EA0-88F4-D6C472D4CB75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.ServerApplication", "InvestmentHub.ServerApplication\InvestmentHub.ServerApplication.csproj", "{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A637D4C0-64E7-4220-B3D6-F2647B2D8D70}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7771BB5-A5BE-4B66-A18C-9227B675FDF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,6 +43,14 @@ Global
 		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F326D0-79FE-4EA0-88F4-D6C472D4CB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F326D0-79FE-4EA0-88F4-D6C472D4CB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F326D0-79FE-4EA0-88F4-D6C472D4CB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F326D0-79FE-4EA0-88F4-D6C472D4CB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +61,7 @@ Global
 		{3E2A583C-D24C-4595-8CA1-8AF080AF99FE} = {8D7B2062-AE5E-4C31-B1F4-03F89BBA31BE}
 		{047FEF8E-F3F2-4D41-9C4F-C0A13080669C} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
 		{8736E1D1-5BFA-4B8B-A685-BCC399AD1E3E} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
+		{222385C0-8F16-461A-A01E-BF3AA424D0E6} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70C53D03-F56B-465D-BC43-0386B1305CDA}
