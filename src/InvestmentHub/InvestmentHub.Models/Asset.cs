@@ -1,7 +1,15 @@
-﻿namespace InvestmentHub.Models
+﻿using System;
+
+namespace InvestmentHub.Models
 {
     public class Asset
     {
+        /// <summary>
+        /// Id of the asset.
+        /// Is defined as a Hash of ProviderName and AssetName
+        /// </summary>
+        public string Id { get; set; }
+
         /// <summary>
         /// Name of the provider
         /// </summary>
@@ -26,6 +34,12 @@
         /// Is this investment profitable (does it generate passive income)
         /// </summary>
         public bool GeneratesIncome { get; set; }
+
+        /// <summary>
+        /// Date the asset was saved retrieved.
+        /// This date does not mean when the asset was created on provider.
+        /// </summary>
+        public DateTimeOffset StorageDate { get; set; }
 
         /// <summary>
         /// Percentage of the investment over the total

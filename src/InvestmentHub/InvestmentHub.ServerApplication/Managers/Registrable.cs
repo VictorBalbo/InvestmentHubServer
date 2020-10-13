@@ -7,7 +7,8 @@ namespace InvestmentHub.ServerApplication.Managers
         public void RegisterTo(IServiceCollection services)
         {
             services
-                .AddSingleton<IAccountManager, AccountManager>();
+                .AddSingleton<IAccountManager, AccountManager>()
+                .AddSingleton<IAssetManager, AssetManager>();
         }
     }
 }

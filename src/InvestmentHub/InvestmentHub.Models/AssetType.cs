@@ -5,6 +5,7 @@
         Balance,
         Stock,
         FixedIncome,
-        Fund
+        Fund,
+        Unknown,
     }
 }

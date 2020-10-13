@@ -7,7 +7,8 @@ namespace InvestmentHub.ServerApplication.Storage.Sql
         public void RegisterTo(IServiceCollection services)
         {
             services
-                .AddSingleton<IAccountMap, AccountMap>();
+                .AddSingleton<IAccountMap, AccountMap>()
+                .AddSingleton<IAssetSetMap, AssetSetMap>();
         }
     }
 }
