@@ -1,4 +1,5 @@
-using InvestmentHub.Providers.Models;
+using InvestmentHub.Models;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,6 +11,6 @@ namespace InvestmentHub.Providers
 
         Task<bool> LoginAsync(string userName, string userPassword, CancellationToken cancellationToken);
 
-        Task<InvestmentSummary> GetSavingsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<Asset>> GetAssetsAsync(CancellationToken cancellationToken);
     }
 }

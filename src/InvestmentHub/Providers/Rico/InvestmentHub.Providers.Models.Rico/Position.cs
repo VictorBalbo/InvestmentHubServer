@@ -9,16 +9,16 @@ namespace InvestmentHub.Providers.Models.Rico
         public string ProductTypeString { get; set; }
 
         [JsonIgnore]
-        public InvestmentType ProductType
+        public ProductType ProductType
         {
             get
             {
-                if (Enum.TryParse<InvestmentType>(ProductTypeString, true, out var result))
+                if (Enum.TryParse<ProductType>(ProductTypeString, true, out var result))
                 {
                     return result;
                 }
 
-                return InvestmentType.UNKNOWN;
+                return ProductType.UNKNOWN;
             }
         }
 

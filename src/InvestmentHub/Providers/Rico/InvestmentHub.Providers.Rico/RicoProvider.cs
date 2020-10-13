@@ -1,4 +1,4 @@
-﻿using InvestmentHub.Providers.Models;
+﻿using InvestmentHub.Models;
 using InvestmentHub.Providers.Models.Rico;
 using InvestmentHub.Providers.Models.Rico.Requests;
 using InvestmentHub.Providers.Models.Rico.Responses;
@@ -10,29 +10,26 @@ using System.Threading.Tasks;
 
 namespace InvestmentHub.Providers.Rico
 {
-    public class RicoProvider : IProvider, IDisposable
+    public sealed class RicoProvider : IProvider, IDisposable
     {
         public string ProviderName { get; }
         private readonly BaseHttpClient _httpClient;
 
         public RicoProvider()
         {
+            ProviderName = "Rico";
             _httpClient = new HttpClient();
         }
 
-        public async Task<InvestmentSummary> GetSavingsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Asset>> GetAssetsAsync(CancellationToken cancellationToken)
         {
             try
             {
                 var getSummaryResponse = await _httpClient.GetAsync<GetSummaryPositionResponse>(ProviderUrls.GET_SUMMARY_POSITION, cancellationToken);
-                var investments = await Task.WhenAll(getSummaryResponse.Positions.Select(p => GetInvestmentFromPositionAsync(p, cancellationToken)));
-
-                return new InvestmentSummary
-                {
-                    TotalValue = getSummaryResponse.TotalValue,
-                    TotalInvestedValue = getSummaryResponse.TotalInvestedValue,
-                    Investments = investments.Where(p => p?.Count() > 0).SelectMany(p => p)
-                };
+                var assets = await Task.WhenAll(getSummaryResponse.Positions.Select(p => GetAssetsFromPositionAsync(p, cancellationToken)));
+                return assets
+                    .Where(a => a?.Count() > 0)
+                    .SelectMany(a => a);
             }
             catch (Exception ex)
             {
@@ -59,8 +56,8 @@ namespace InvestmentHub.Providers.Rico
                 {
                     Username = userName,
                     SessionId = getKeyboardRequest.SessionId,
-                    Token = getKeyboardResponse.Keyboard.Token,
-                    Password = GetPasswordFromKeyboard(userPassword, getKeyboardResponse.Keyboard)
+                    Token = getKeyboardResponse.Token,
+                    Password = GetPasswordFromKeyboard(userPassword, getKeyboardResponse)
                 };
                 await _httpClient.PostAsync(ProviderUrls.AUTHENTICATE, authenticateRequest, cancellationToken);
                 return true;
@@ -78,7 +75,7 @@ namespace InvestmentHub.Providers.Rico
             _httpClient.Dispose();
         }
 
-        private string GetPasswordFromKeyboard(string userPassword, Keyboard keyboard)
+        private string GetPasswordFromKeyboard(string userPassword, GetKeyboardResponse keyboard)
         {
             var password = userPassword.Select(
                 c => keyboard.Keys
@@ -88,7 +85,7 @@ namespace InvestmentHub.Providers.Rico
             return string.Join("", password);
         }
 
-        private async Task<IEnumerable<Investment>> GetInvestmentFromPositionAsync(Position position, CancellationToken cancellationToken)
+        private async Task<IEnumerable<Asset>> GetAssetsFromPositionAsync(Position position, CancellationToken cancellationToken)
         {
             if (position.TotalValue == 0)
             {
@@ -97,16 +94,18 @@ namespace InvestmentHub.Providers.Rico
 
             switch (position.ProductType)
             {
-                case InvestmentType.BALANCE:
-                    return new Investment[]
+                case ProductType.BALANCE:
+                    return new Asset[]
                     {
-                        new Investment
+                        new Asset
                         {
+                            Id = $"{ProviderName}:{position.ProductTypeName}",
                             ProviderName = ProviderName,
-                            InvestmentName = position.ProductTypeName,
+                            AssetName = position.ProductTypeName,
                             GeneratesIncome = false,
                             Value = position.TotalValue,
-                            Type = position.ProductType,
+                            Type = position.ProductType.GetEquivalentAssetType(),
+                            StorageDate = DateTimeOffset.UtcNow,
                         }
                     };
 
@@ -116,13 +115,15 @@ namespace InvestmentHub.Providers.Rico
                         var requestUrl = ProviderUrls.GET_POSITION_DETAILS.Replace("{TYPE}", position.ProductTypeString.ToLower());
                         var positionDetailResponse = await _httpClient.GetAsync<GetPositionDetailResponse>(requestUrl, cancellationToken);
                         return positionDetailResponse.Positions.Select(pd =>
-                            new Investment
+                            new Asset
                             {
+                                Id = $"{ProviderName}:{pd.Symbol.Name}",
                                 ProviderName = ProviderName,
-                                InvestmentName = pd.Symbol.Name,
+                                AssetName = pd.Symbol.Name,
                                 GeneratesIncome = true,
                                 Value = pd.TotalValue,
-                                Type = position.ProductType,
+                                Type = position.ProductType.GetEquivalentAssetType(),
+                                StorageDate = DateTimeOffset.UtcNow,
                             }
                         );
                     }
@@ -130,15 +131,17 @@ namespace InvestmentHub.Providers.Rico
                     {
                         Console.WriteLine("Error authenticating to Rico Provider");
                         Console.WriteLine(ex.Message);
-                        return new Investment[]
+                        return new Asset[]
                         {
-                            new Investment
+                            new Asset
                             {
+                                Id = $"{ProviderName}:{position.ProductTypeName}",
                                 ProviderName = ProviderName,
-                                InvestmentName = position.ProductTypeName,
+                                AssetName = position.ProductTypeName,
                                 GeneratesIncome = true,
                                 Value = position.TotalValue,
-                                Type = position.ProductType,
+                                Type = position.ProductType.GetEquivalentAssetType(),
+                                StorageDate = DateTimeOffset.UtcNow,
                             }
                         };
                     }

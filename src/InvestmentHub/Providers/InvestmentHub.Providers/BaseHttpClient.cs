@@ -47,7 +47,7 @@ namespace InvestmentHub.Providers
             using var httpResponseMessage = await _httpClient.SendAsync(requestMessage, cancellationToken);
             httpResponseMessage.EnsureSuccessStatusCode();
 
-            if (httpResponseMessage.Content == null)
+            if (httpResponseMessage.Content?.Headers?.ContentType == null)
             {
                 return default;
             }
