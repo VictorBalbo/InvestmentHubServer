@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InvestmentHub.Models\InvestmentHub.Models.csproj" />
+    <ProjectReference Include="..\Providers\Rico\InvestmentHub.Providers.Rico\InvestmentHub.Providers.Rico.csproj" />
   </ItemGroup>
 
 
