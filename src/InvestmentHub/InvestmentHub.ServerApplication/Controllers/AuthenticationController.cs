@@ -28,7 +28,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("register")]
+        [HttpPost(UriTemplates.REGISTER)]
         public async Task<IActionResult> Register([FromBody]Account account, CancellationToken cancellationToken)
         {
             Guard.Argument(account.Email, nameof(account.Email)).NotNull();
@@ -52,7 +52,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("login")]
+        [HttpPost(UriTemplates.LOGIN)]
         public async Task<IActionResult> Login([FromBody]Account account, CancellationToken cancellationToken)
         {
             Guard.Argument(account.Email, nameof(account.Email)).NotNull();

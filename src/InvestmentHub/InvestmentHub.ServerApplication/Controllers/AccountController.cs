@@ -10,7 +10,7 @@ namespace InvestmentHub.ServerApplication.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route(UriTemplates.ACCOUNTS)]
     public class AccountController : ControllerBase
     {
         private readonly IAccountManager _accountManager;
