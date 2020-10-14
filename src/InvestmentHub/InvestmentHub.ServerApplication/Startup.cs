@@ -35,7 +35,6 @@ namespace InvestmentHub.ServerApplication
                 .AddMvc()
                 .AddControllersAsServices();
 
-            //var appSettings = appSettingsSection.Get<AppSettings>();
             var key = Encoding.ASCII.GetBytes(_configurations.SymmetricKey);
             services.AddAuthentication(x =>
             {
