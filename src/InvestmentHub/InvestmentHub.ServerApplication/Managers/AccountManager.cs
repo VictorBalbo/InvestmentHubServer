@@ -8,7 +8,7 @@ using System;
 
 namespace InvestmentHub.ServerApplication.Managers
 {
-    public class AccountManager : IAccountManager
+    internal class AccountManager : IAccountManager
     {
         private readonly IAccountMap _accountMap;
 

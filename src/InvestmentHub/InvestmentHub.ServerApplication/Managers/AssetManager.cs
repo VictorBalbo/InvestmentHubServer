@@ -10,7 +10,7 @@ using Take.Elephant;
 
 namespace InvestmentHub.ServerApplication.Managers
 {
-    public class AssetManager : IAssetManager
+    internal class AssetManager : IAssetManager
     {
         private readonly IAssetSetMap _assetSetMap;
 
