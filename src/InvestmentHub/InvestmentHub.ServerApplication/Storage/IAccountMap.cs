@@ -3,7 +3,7 @@ using Take.Elephant;
 
 namespace InvestmentHub.ServerApplication.Storage
 {
-    public interface IAccountMap : IMap<string, Account>
+    internal interface IAccountMap : IMap<string, Account>
     {
     }
 }

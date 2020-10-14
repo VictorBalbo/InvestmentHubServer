@@ -4,7 +4,7 @@ using Take.Elephant.Sql.Mapping;
 
 namespace InvestmentHub.ServerApplication.Storage.Sql
 {
-    public class AccountMap : SqlMap<string, Account>, IAccountMap
+    internal class AccountMap : SqlMap<string, Account>, IAccountMap
     {
         public const string TABLE_NAME = "Accounts";
 

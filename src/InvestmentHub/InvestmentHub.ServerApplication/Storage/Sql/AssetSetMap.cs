@@ -1,12 +1,10 @@
 ﻿using InvestmentHub.Models;
-using System;
-using System.Data;
 using Take.Elephant.Sql;
 using Take.Elephant.Sql.Mapping;
 
 namespace InvestmentHub.ServerApplication.Storage.Sql
 {
-    public class AssetSetMap : SqlSetMap<string, Asset>, IAssetSetMap
+    internal class AssetSetMap : SqlSetMap<string, Asset>, IAssetSetMap
     {
         public const string TABLE_NAME = "Assets";
 
