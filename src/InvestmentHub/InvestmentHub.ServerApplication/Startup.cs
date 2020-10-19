@@ -33,7 +33,7 @@ namespace InvestmentHub.ServerApplication
 
             services
                 .AddMvc()
-                .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true)
+                .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true)
                 .AddControllersAsServices();
 
             var key = Encoding.ASCII.GetBytes(_configurations.SymmetricKey);
