@@ -3,6 +3,7 @@
     public class ProviderCredentials
     {
         public string Email { get; set; }
+        public string Password { get; set; }
         public string ProviderName { get; set; }
         public string ProviderUserName { get; set; }
         public string ProviderUserPassword { get; set; }
@@ -12,6 +13,8 @@
     {
         public static ProviderCredentials RemoveSensitiveInformation(this ProviderCredentials providerCredentials)
         {
+            providerCredentials.Password = null;
+            providerCredentials.ProviderUserName = null;
             providerCredentials.ProviderUserPassword = null;
             return providerCredentials;
         }

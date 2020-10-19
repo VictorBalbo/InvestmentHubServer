@@ -9,7 +9,9 @@ namespace InvestmentHub.ServerApplication.Managers
     {
         Task<IAsyncEnumerable<ProviderCredentials>> GetAccountProviderCredentials(string identity, CancellationToken cancellationToken);
 
-        Task SetAccountProviderCredentials(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
+        Task<IAsyncEnumerable<ProviderCredentials>> GetSecuredAccountProviderCredentials(string identity, CancellationToken cancellationToken);
+
+        Task SetAccountProviderCredentials(string identity, string password, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
 
         Task<bool> DeleteAccountProviderCredentials(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
     }

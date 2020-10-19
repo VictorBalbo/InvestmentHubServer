@@ -9,7 +9,8 @@ namespace InvestmentHub.ServerApplication.Managers
             services
                 .AddSingleton<IAccountManager, AccountManager>()
                 .AddSingleton<IAccountProvidersManager, AccountProvidersManager>()
-                .AddSingleton<IAssetManager, AssetManager>();
+                .AddSingleton<IAssetManager, AssetManager>()
+                .AddSingleton<IEncryptorManager, EncryptorManager>();
         }
     }
 }
