@@ -1,4 +1,4 @@
-using InvestmentHub.ServerApplication.Managers;
+﻿using InvestmentHub.ServerApplication.Managers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +33,7 @@ namespace InvestmentHub.ServerApplication
 
             services
                 .AddMvc()
+                .AddJsonOptions(options => options.JsonSerializerOptions.IgnoreNullValues = true)
                 .AddControllersAsServices();
 
             var key = Encoding.ASCII.GetBytes(_configurations.SymmetricKey);
