@@ -7,6 +7,10 @@ namespace InvestmentHub.ServerApplication.Managers
 {
     public interface IAssetManager
     {
+        Task<bool> GetProviderAssets(string identity, CancellationToken cancellationToken);
+
+        Task<bool> GetProviderAssets(string identity, string password, CancellationToken cancellationToken);
+
         Task<IAsyncEnumerable<Asset>> GetAssetsAsync(string identity, CancellationToken cancellationToken);
 
         Task<Asset> GetAssetAsync(string identity, string assetId, CancellationToken cancellationToken);
