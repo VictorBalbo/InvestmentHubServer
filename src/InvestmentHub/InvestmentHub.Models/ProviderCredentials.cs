@@ -7,6 +7,7 @@
         public string ProviderName { get; set; }
         public string ProviderUserName { get; set; }
         public string ProviderUserPassword { get; set; }
+        public bool ShouldCachePassword { get; set; }
     }
 
     public static class ProviderCredentialsExtensions
