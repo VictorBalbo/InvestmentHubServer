@@ -30,7 +30,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         [HttpPost]
         public async Task FetchAssets([FromBody]string password, CancellationToken cancellationToken)
         {
-            var assets = await _assetManager.GetProviderAssets(User.Identity.Name, password, cancellationToken);
+            await _assetManager.GetProviderAssets(User.Identity.Name, password, cancellationToken);
         }
     }
 }

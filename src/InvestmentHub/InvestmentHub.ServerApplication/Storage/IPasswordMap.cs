@@ -2,7 +2,7 @@
 
 namespace InvestmentHub.ServerApplication.Storage
 {
-    public interface IPasswordMap : IMap<string, string>
+    public interface IPasswordMap : IMap<string, string>, IKeysMap<string, string>
     {
     }
 }

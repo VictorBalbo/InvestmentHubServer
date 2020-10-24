@@ -13,34 +13,19 @@ namespace InvestmentHub.ServerApplication.Managers
     internal class AssetManager : IAssetManager
     {
         private readonly IAssetSetMap _assetSetMap;
-        private readonly IPasswordMap _passwordMap;
         private readonly IProviderContainer _providerContainer;
         private readonly IEncryptorManager _encryptorManager;
         private readonly IAccountProvidersManager _accountProvidersManager;
 
         public AssetManager(IAssetSetMap assetSetMap,
-            IPasswordMap passwordMap,
             IProviderContainer providerContainer,
             IEncryptorManager encryptorManager,
             IAccountProvidersManager accountProvidersManager)
         {
             _assetSetMap = assetSetMap;
-            _passwordMap = passwordMap;
             _providerContainer = providerContainer;
             _encryptorManager = encryptorManager;
             _accountProvidersManager = accountProvidersManager;
-        }
-
-        public async Task<bool> GetProviderAssets(string identity, CancellationToken cancellationToken)
-        {
-            Guard.Argument(identity).NotNull().NotEmpty();
-
-            var password = await _passwordMap.GetValueOrDefaultAsync(identity, cancellationToken);
-            if (string.IsNullOrEmpty(password))
-            {
-                return false;
-            }
-            return await GetProviderAssets(identity, password, cancellationToken);
         }
 
         public async Task<bool> GetProviderAssets(string identity, string password, CancellationToken cancellationToken)
@@ -51,18 +36,13 @@ namespace InvestmentHub.ServerApplication.Managers
             var accountProviders = await _accountProvidersManager.GetAccountProviderCredentials(identity, cancellationToken);
             try
             {
-                var accounts = accountProviders
-                    .Select(a =>
-                    {
-                        a.ProviderUserName = _encryptorManager.Decrypt(a.ProviderUserName, password);
-                        a.ProviderUserPassword = _encryptorManager.Decrypt(a.ProviderUserPassword, password);
-                        return a;
-                    });
-
-                await foreach (var account in accounts)
+                await foreach (var account in accountProviders)
                 {
+                    var providerUserName = _encryptorManager.Decrypt(account.ProviderUserName, password);
+                    var providerUserPassword = _encryptorManager.Decrypt(account.ProviderUserPassword, password);
+
                     var provider = _providerContainer.GetProvider(account.ProviderName);
-                    var isLoginSuccessful = await provider.LoginAsync(account.ProviderUserName, account.ProviderUserPassword, cancellationToken);
+                    var isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
                     if (isLoginSuccessful)
                     {
                         var assets = await provider.GetAssetsAsync(cancellationToken);

@@ -33,11 +33,8 @@ namespace InvestmentHub.ServerApplication.Managers
 
         public async Task<IAsyncEnumerable<ProviderCredentials>> GetSecuredAccountProviderCredentials(string identity, CancellationToken cancellationToken)
         {
-            Guard.Argument(identity).NotNull().NotEmpty();
-
-            var accountProviders = await _accountProvidersSetMap.GetValueOrEmptyAsync(identity, cancellationToken);
+            var accountProviders = await GetAccountProviderCredentials(identity, cancellationToken);
             return accountProviders
-                .AsEnumerableAsync()
                 .Select(a => a.RemoveSensitiveInformation());
         }
 
