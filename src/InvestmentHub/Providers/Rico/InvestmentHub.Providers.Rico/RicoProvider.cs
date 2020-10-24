@@ -95,6 +95,7 @@ namespace InvestmentHub.Providers.Rico
             switch (position.ProductType)
             {
                 case ProductType.BALANCE:
+                case ProductType.TREASURY:
                     return new Asset[]
                     {
                         new Asset

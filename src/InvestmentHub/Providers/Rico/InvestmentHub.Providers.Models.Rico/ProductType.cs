@@ -26,6 +26,7 @@ namespace InvestmentHub.Providers.Models.Rico
                     return AssetType.Balance;
 
                 case ProductType.FIXED_INCOME:
+                case ProductType.TREASURY:
                     return AssetType.FixedIncome;
 
                 case ProductType.FUNDS:
@@ -36,7 +37,6 @@ namespace InvestmentHub.Providers.Models.Rico
 
                 case ProductType.OPTION:
                 case ProductType.FUTURE:
-                case ProductType.TREASURY:
                 case ProductType.R8:
                 case ProductType.PENSION_FUNDS:
                 case ProductType.UNKNOWN:
