@@ -1,5 +1,4 @@
 ﻿using InvestmentHub.ServerApplication.Managers;
-using InvestmentHub.ServerApplication.Providers;
 using InvestmentHub.ServerApplication.Storage;
 using System;
 using System.Threading;
@@ -11,11 +10,15 @@ namespace InvestmentHub.ServerApplication.Services
     {
         private readonly IAssetManager _assetManager;
         private readonly IPasswordMap _passwordMap;
+        private readonly IConfigurations _configurations;
+        private readonly IEncryptorManager _encryptorManager;
 
-        public AssetUpdateService(IAssetManager assetManager, IPasswordMap passwordMap)
+        public AssetUpdateService(IAssetManager assetManager, IPasswordMap passwordMap, IConfigurations configurations, IEncryptorManager encryptorManager)
         {
             _assetManager = assetManager;
             _passwordMap = passwordMap;
+            _configurations = configurations;
+            _encryptorManager = encryptorManager;
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -27,8 +30,9 @@ namespace InvestmentHub.ServerApplication.Services
                     var cachedAccountIds = await _passwordMap.GetKeysAsync();
                     await foreach (var accountId in cachedAccountIds)
                     {
-                        var accountPass = await _passwordMap.GetValueOrDefaultAsync(accountId, cancellationToken);
-                        await _assetManager.GetProviderAssets(accountId, accountPass, cancellationToken);
+                        var encryptedPassword = await _passwordMap.GetValueOrDefaultAsync(accountId, cancellationToken);
+                        var accountPassword = _encryptorManager.Decrypt(encryptedPassword, _configurations.SymmetricKey);
+                        await _assetManager.GetProviderAssets(accountId, accountPassword, cancellationToken);
                     }
                 }
                 catch (Exception e)

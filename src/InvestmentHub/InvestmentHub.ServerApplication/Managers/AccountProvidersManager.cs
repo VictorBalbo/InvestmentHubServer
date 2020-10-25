@@ -14,12 +14,14 @@ namespace InvestmentHub.ServerApplication.Managers
         private readonly IAccountProvidersSetMap _accountProvidersSetMap;
         private readonly IEncryptorManager _encryptorManager;
         private readonly IPasswordMap _passwordMap;
+        private readonly IConfigurations _configurations;
 
-        public AccountProvidersManager(IAccountProvidersSetMap accountProvidersSetMap, IEncryptorManager encryptorManager, IPasswordMap passwordMap)
+        public AccountProvidersManager(IAccountProvidersSetMap accountProvidersSetMap, IEncryptorManager encryptorManager, IPasswordMap passwordMap, IConfigurations configurations)
         {
             _accountProvidersSetMap = accountProvidersSetMap;
             _encryptorManager = encryptorManager;
             _passwordMap = passwordMap;
+            _configurations = configurations;
         }
 
         public async Task<IAsyncEnumerable<ProviderCredentials>> GetAccountProviderCredentials(string identity, CancellationToken cancellationToken)
@@ -55,7 +57,8 @@ namespace InvestmentHub.ServerApplication.Managers
 
             if (providerCredentials.ShouldCachePassword)
             {
-                await _passwordMap.TryAddAsync(identity, password);
+                var encryptedPassword = _encryptorManager.Encrypt(password, _configurations.SymmetricKey);
+                await _passwordMap.TryAddAsync(identity, encryptedPassword);
             }
         }
 
