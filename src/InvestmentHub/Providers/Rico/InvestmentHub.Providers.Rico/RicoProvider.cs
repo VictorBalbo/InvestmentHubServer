@@ -95,7 +95,6 @@ namespace InvestmentHub.Providers.Rico
             switch (position.ProductType)
             {
                 case ProductType.BALANCE:
-                case ProductType.TREASURY:
                     return new Asset[]
                     {
                         new Asset
@@ -104,6 +103,21 @@ namespace InvestmentHub.Providers.Rico
                             ProviderName = ProviderName,
                             AssetName = position.ProductTypeName,
                             GeneratesIncome = false,
+                            Value = position.TotalValue,
+                            Type = position.ProductType.GetEquivalentAssetType(),
+                            StorageDate = DateTimeOffset.UtcNow,
+                        }
+                    };
+
+                case ProductType.TREASURY:
+                    return new Asset[]
+                    {
+                        new Asset
+                        {
+                            Id = $"{ProviderName}:{position.ProductTypeName}",
+                            ProviderName = ProviderName,
+                            AssetName = position.ProductTypeName,
+                            GeneratesIncome = true,
                             Value = position.TotalValue,
                             Type = position.ProductType.GetEquivalentAssetType(),
                             StorageDate = DateTimeOffset.UtcNow,
