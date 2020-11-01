@@ -87,7 +87,7 @@ namespace InvestmentHub.Providers.Rico
 
         private async Task<IEnumerable<Asset>> GetAssetsFromPositionAsync(Position position, CancellationToken cancellationToken)
         {
-            if (position.TotalValue == 0)
+            if (position.NetValue == 0)
             {
                 return null;
             }
@@ -103,7 +103,7 @@ namespace InvestmentHub.Providers.Rico
                             ProviderName = ProviderName,
                             AssetName = position.ProductTypeName,
                             GeneratesIncome = false,
-                            Value = position.TotalValue,
+                            Value = position.NetValue,
                             Type = position.ProductType.GetEquivalentAssetType(),
                             StorageDate = DateTimeOffset.UtcNow,
                         }
@@ -118,7 +118,7 @@ namespace InvestmentHub.Providers.Rico
                             ProviderName = ProviderName,
                             AssetName = position.ProductTypeName,
                             GeneratesIncome = true,
-                            Value = position.TotalValue,
+                            Value = position.NetValue,
                             Type = position.ProductType.GetEquivalentAssetType(),
                             StorageDate = DateTimeOffset.UtcNow,
                         }
@@ -154,7 +154,7 @@ namespace InvestmentHub.Providers.Rico
                                 ProviderName = ProviderName,
                                 AssetName = position.ProductTypeName,
                                 GeneratesIncome = true,
-                                Value = position.TotalValue,
+                                Value = position.NetValue,
                                 Type = position.ProductType.GetEquivalentAssetType(),
                                 StorageDate = DateTimeOffset.UtcNow,
                             }
