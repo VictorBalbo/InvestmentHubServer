@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace InvestmentHub.ServerApplication.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
@@ -27,9 +27,8 @@ namespace InvestmentHub.ServerApplication.Controllers
             _configurations = configurations;
         }
 
-        [AllowAnonymous]
         [HttpPost(UriTemplates.REGISTER)]
-        public async Task<IActionResult> Register([FromBody]Account account, CancellationToken cancellationToken)
+        public async Task<IActionResult> Register([FromBody] Account account, CancellationToken cancellationToken)
         {
             Guard.Argument(account.Email, nameof(account.Email)).NotNull();
             Guard.Argument(account.Password, nameof(account.Password)).NotNull();
@@ -51,9 +50,8 @@ namespace InvestmentHub.ServerApplication.Controllers
             });
         }
 
-        [AllowAnonymous]
         [HttpPost(UriTemplates.LOGIN)]
-        public async Task<IActionResult> Login([FromBody]Account account, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login([FromBody] Account account, CancellationToken cancellationToken)
         {
             Guard.Argument(account.Email, nameof(account.Email)).NotNull();
             Guard.Argument(account.Password, nameof(account.Password)).NotNull();
@@ -89,8 +87,7 @@ namespace InvestmentHub.ServerApplication.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-            return tokenString;
+            return tokenHandler.WriteToken(token);
         }
     }
 }

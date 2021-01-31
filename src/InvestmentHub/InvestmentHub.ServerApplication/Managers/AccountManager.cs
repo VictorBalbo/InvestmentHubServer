@@ -24,7 +24,12 @@ namespace InvestmentHub.ServerApplication.Managers
 
             var storageAccount = await _accountMap.GetValueOrDefaultAsync(account.Email, cancellationToken);
 
-            if (account.Email != storageAccount.Email)
+            if (storageAccount == null)
+            {
+                return null;
+            }
+
+            if (storageAccount.Email != account.Email)
             {
                 return null;
             }
