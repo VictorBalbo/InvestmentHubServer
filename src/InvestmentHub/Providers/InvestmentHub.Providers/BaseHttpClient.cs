@@ -21,9 +21,10 @@ namespace InvestmentHub.Providers
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            foreach (var header in GetDefaultHeaders())
+            // ReSharper disable once VirtualMemberCallInConstructor
+            foreach (var (key, value) in GetDefaultHeaders())
             {
-                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
+                _httpClient.DefaultRequestHeaders.TryAddWithoutValidation(key, value);
             }
         }
 
@@ -52,7 +53,7 @@ namespace InvestmentHub.Providers
                 return default;
             }
 
-            using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+            await using var responseStream = await httpResponseMessage.Content.ReadAsStreamAsync();
             var responseString = await httpResponseMessage.Content.ReadAsStringAsync();
             return await JsonSerializer.DeserializeAsync<TResponse>(responseStream, _serializerOptions, cancellationToken);
         }

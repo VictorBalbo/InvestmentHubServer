@@ -5,6 +5,11 @@ namespace InvestmentHub.Models
     public class Asset
     {
         /// <summary>
+        /// Identity related to this asset
+        /// </summary>
+        public string Identity { get; set; }
+        
+        /// <summary>
         /// Id of the asset.
         /// Is defined as a Hash of ProviderName and AssetName
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using InvestmentHub.Models;
+﻿using System;
+using InvestmentHub.Models;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace InvestmentHub.ServerApplication.Managers
 
         Task SetAccountProviderCredentials(string identity, string password, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
 
-        Task SetLastSuccessfulUpdate(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
+        Task SetLastSuccessfulUpdate(string identity, ProviderCredentials providerCredentials, DateTimeOffset dateTimeOffset, CancellationToken cancellationToken);
 
         Task<bool> DeleteAccountProviderCredentials(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
     }

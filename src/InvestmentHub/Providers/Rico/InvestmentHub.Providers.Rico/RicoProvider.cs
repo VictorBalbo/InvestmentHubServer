@@ -105,7 +105,6 @@ namespace InvestmentHub.Providers.Rico
                             GeneratesIncome = false,
                             Value = position.NetValue,
                             Type = position.ProductType.GetEquivalentAssetType(),
-                            StorageDate = DateTimeOffset.UtcNow,
                         }
                     };
 
@@ -120,7 +119,6 @@ namespace InvestmentHub.Providers.Rico
                             GeneratesIncome = true,
                             Value = position.NetValue,
                             Type = position.ProductType.GetEquivalentAssetType(),
-                            StorageDate = DateTimeOffset.UtcNow,
                         }
                     };
 
@@ -138,7 +136,6 @@ namespace InvestmentHub.Providers.Rico
                                 GeneratesIncome = true,
                                 Value = pd.TotalValue,
                                 Type = position.ProductType.GetEquivalentAssetType(),
-                                StorageDate = DateTimeOffset.UtcNow,
                             }
                         );
                     }
@@ -156,7 +153,6 @@ namespace InvestmentHub.Providers.Rico
                                 GeneratesIncome = true,
                                 Value = position.NetValue,
                                 Type = position.ProductType.GetEquivalentAssetType(),
-                                StorageDate = DateTimeOffset.UtcNow,
                             }
                         };
                     }

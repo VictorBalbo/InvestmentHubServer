@@ -10,7 +10,6 @@ namespace InvestmentHub.ServerApplication.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route(UriTemplates.ASSETS)]
     public class AssetsController : ControllerBase
     {
         private readonly IAssetManager _assetManager;
@@ -19,18 +18,36 @@ namespace InvestmentHub.ServerApplication.Controllers
         {
             _assetManager = assetManager;
         }
-
+        
+        [Route(UriTemplates.ASSET)]
         [HttpGet]
-        public async Task<IAsyncEnumerable<Asset>> GetOwnAssets(CancellationToken cancellationToken)
+        public async Task<Asset> GetOwnAsset(string assetId, CancellationToken cancellationToken)
         {
-            var assets = await _assetManager.GetAssetsAsync(User.Identity.Name, cancellationToken);
+            var assets = await _assetManager.GetAssetAsync(User.Identity.Name, assetId, cancellationToken);
             return assets;
         }
 
+        [Route(UriTemplates.ASSETS)]
+        [HttpGet]
+        public async Task<IAsyncEnumerable<Asset>> GetOwnAssets(CancellationToken cancellationToken)
+        {
+            var assets = await _assetManager.GetAllAssetsAsync(User.Identity.Name, cancellationToken);
+            return assets;
+        }
+        
+        [Route(UriTemplates.ASSETS_CURRENT)]
+        [HttpGet]
+        public async Task<IEnumerable<Asset>> GetOwnCurrentAssets(CancellationToken cancellationToken)
+        {
+            var assets = await _assetManager.GetCurrentAssetsAsync(User.Identity.Name, cancellationToken);
+            return assets;
+        }
+        
+        [Route(UriTemplates.ASSETS)]
         [HttpPost]
         public async Task FetchOwnAssets([FromBody]string password, CancellationToken cancellationToken)
         {
-            await _assetManager.GetProviderAssets(User.Identity.Name, password, true, cancellationToken);
+            await _assetManager.FetchProviderAssets(User.Identity.Name, password, true, cancellationToken);
         }
     }
 }

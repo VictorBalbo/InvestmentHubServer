@@ -63,7 +63,7 @@ namespace InvestmentHub.ServerApplication.Managers
             }
         }
 
-        public async Task SetLastSuccessfulUpdate(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken)
+        public async Task SetLastSuccessfulUpdate(string identity, ProviderCredentials providerCredentials, DateTimeOffset dateTimeOffset, CancellationToken cancellationToken)
         {
             Guard.Argument(identity).NotNull().NotWhiteSpace();
             Guard.Argument(providerCredentials).NotNull();
@@ -72,7 +72,7 @@ namespace InvestmentHub.ServerApplication.Managers
             Guard.Argument(providerCredentials.ProviderUserName, nameof(providerCredentials.ProviderUserName)).NotNull().NotWhiteSpace();
             Guard.Argument(providerCredentials.ProviderUserPassword, nameof(providerCredentials.ProviderUserPassword)).NotNull().NotWhiteSpace();
 
-            providerCredentials.LastSuccessfulUpdate = DateTimeOffset.UtcNow;
+            providerCredentials.LastSuccessfulUpdate = dateTimeOffset;
             await _accountProvidersSetMap.AddItemAsync(identity, providerCredentials, cancellationToken);
         }
 

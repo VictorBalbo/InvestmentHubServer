@@ -6,20 +6,19 @@ namespace InvestmentHub.ServerApplication.Storage.Sql
 {
     internal class AssetSetMap : SqlSetMap<string, Asset>, IAssetSetMap
     {
-        public const string TABLE_NAME = "Assets";
+        private const string TableName = "Assets";
 
-        public static ITable AssetsTable = TableBuilder
-            .WithName(TABLE_NAME)
+        private static readonly ITable AssetsTable = TableBuilder
+            .WithName(TableName)
             .WithColumnsFromTypeProperties<Asset>()
-            .WithColumnFromType<string>(nameof(Account.Email))
-            .WithKeyColumnsNames(nameof(Account.Email))
+            .WithKeyColumnsNames(nameof(Asset.Identity))
             .WithKeyColumnsNames(nameof(Asset.ProviderName))
             .WithKeyColumnsNames(nameof(Asset.AssetName))
             .WithKeyColumnsNames(nameof(Asset.StorageDate))
             .Build();
 
         public AssetSetMap(IConfigurations configurations)
-            : base(configurations.SqlConnectionString, AssetsTable, new ValueMapper<string>(nameof(Account.Email)), new TypeMapper<Asset>(AssetsTable))
+            : base(configurations.SqlConnectionString, AssetsTable, new ValueMapper<string>(nameof(Asset.Identity)), new TypeMapper<Asset>(AssetsTable))
         {
         }
     }
