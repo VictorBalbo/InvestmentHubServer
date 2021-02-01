@@ -8,7 +8,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace InvestmentHub.ServerApplication
 {
@@ -46,18 +45,17 @@ namespace InvestmentHub.ServerApplication
             {
                 x.Events = new JwtBearerEvents
                 {
-                    OnTokenValidated = context =>
+                    OnTokenValidated = async context =>
                     {
                         var cancellationTokenSource = new CancellationTokenSource(_configurations.DefaultCancellationTokenExpiration);
                         var accountManager = context.HttpContext.RequestServices.GetRequiredService<IAccountManager>();
                         var accountEmail = context.Principal.Identity.Name;
-                        var account = accountManager.GetAcountAsync(accountEmail, cancellationTokenSource.Token);
+                        var account = await accountManager.GetAccountAsync(accountEmail, cancellationTokenSource.Token);
                         if (account == null)
                         {
                             // return unauthorized if user no longer exists
                             context.Fail("Unauthorized");
                         }
-                        return Task.CompletedTask;
                     }
                 };
                 x.RequireHttpsMetadata = false;

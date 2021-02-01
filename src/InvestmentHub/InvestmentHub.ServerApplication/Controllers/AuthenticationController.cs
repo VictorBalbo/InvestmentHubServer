@@ -62,13 +62,13 @@ namespace InvestmentHub.ServerApplication.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
             }
 
-            string tokenString = GetAuthToken(account);
+            string tokenString = GetAuthToken(storageAccount);
 
             // return basic user info and authentication token
             return Ok(new
             {
-                account.Email,
-                account.Name,
+                storageAccount.Email,
+                storageAccount.Name,
                 Token = tokenString
             });
         }
