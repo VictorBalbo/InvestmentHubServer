@@ -23,7 +23,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         [HttpGet]
         public async Task<Account> GetOwnAccount(CancellationToken cancellationToken)
         {
-            var account = await _accountManager.GetAcountAsync(User.Identity.Name, cancellationToken);
+            var account = await _accountManager.GetAccountAsync(User.Identity.Name, cancellationToken);
             return account;
         }
 
@@ -46,7 +46,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         [HttpDelete]
         public async Task DeleteOwnAccount(CancellationToken cancellationToken)
         {
-            var isDeleted = await _accountManager.DeleteAcountAsync(User.Identity.Name, cancellationToken);
+            var isDeleted = await _accountManager.DeleteAccountAsync(User.Identity.Name, cancellationToken);
 
             if (!isDeleted)
             {

@@ -23,7 +23,6 @@ namespace InvestmentHub.ServerApplication.Managers
             Guard.Argument(account.Password, nameof(account.Password)).NotNull();
 
             var storageAccount = await _accountMap.GetValueOrDefaultAsync(account.Email, cancellationToken);
-
             if (storageAccount == null)
             {
                 return null;
@@ -75,7 +74,7 @@ namespace InvestmentHub.ServerApplication.Managers
             return await _accountMap.TryAddAsync(account.Email, account, true, cancellationToken);
         }
 
-        public async Task<Account> GetAcountAsync(string email, CancellationToken cancellationToken)
+        public async Task<Account> GetAccountAsync(string email, CancellationToken cancellationToken)
         {
             Guard.Argument(email).NotNull();
 
@@ -83,7 +82,7 @@ namespace InvestmentHub.ServerApplication.Managers
             return account.RemoveSensitiveInformation();
         }
 
-        public async Task<bool> DeleteAcountAsync(string email, CancellationToken cancellationToken)
+        public async Task<bool> DeleteAccountAsync(string email, CancellationToken cancellationToken)
         {
             Guard.Argument(email).NotNull();
 

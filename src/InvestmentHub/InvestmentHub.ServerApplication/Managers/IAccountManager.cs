@@ -12,8 +12,8 @@ namespace InvestmentHub.ServerApplication.Managers
 
         Task<bool> UpdateAccountAsync(Account account, CancellationToken cancellationToken);
 
-        Task<Account> GetAcountAsync(string identity, CancellationToken cancellationToken);
+        Task<Account> GetAccountAsync(string identity, CancellationToken cancellationToken);
 
-        Task<bool> DeleteAcountAsync(string identity, CancellationToken cancellationToken);
+        Task<bool> DeleteAccountAsync(string identity, CancellationToken cancellationToken);
     }
 }
