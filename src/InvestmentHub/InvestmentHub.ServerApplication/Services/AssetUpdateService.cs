@@ -28,11 +28,11 @@ namespace InvestmentHub.ServerApplication.Services
                 try
                 {
                     var cachedAccountIds = await _passwordMap.GetKeysAsync();
-                    await foreach (var accountId in cachedAccountIds)
+                    await foreach (var accountId in cachedAccountIds.WithCancellation(cancellationToken))
                     {
                         var encryptedPassword = await _passwordMap.GetValueOrDefaultAsync(accountId, cancellationToken);
                         var accountPassword = _encryptorManager.Decrypt(encryptedPassword, _configurations.SymmetricKey);
-                        await _assetManager.GetProviderAssets(accountId, accountPassword, cancellationToken);
+                        await _assetManager.GetProviderAssets(accountId, accountPassword, false, cancellationToken);
                     }
                 }
                 catch (Exception e)

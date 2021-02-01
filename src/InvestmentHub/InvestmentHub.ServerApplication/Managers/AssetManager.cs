@@ -2,6 +2,7 @@
 using InvestmentHub.Models;
 using InvestmentHub.ServerApplication.Providers;
 using InvestmentHub.ServerApplication.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -28,7 +29,7 @@ namespace InvestmentHub.ServerApplication.Managers
             _accountProvidersManager = accountProvidersManager;
         }
 
-        public async Task<bool> GetProviderAssets(string identity, string password, CancellationToken cancellationToken)
+        public async Task<bool> GetProviderAssets(string identity, string password, bool forceUpdate, CancellationToken cancellationToken)
         {
             Guard.Argument(identity).NotNull().NotEmpty();
             Guard.Argument(password).NotNull().NotEmpty();
@@ -36,24 +37,33 @@ namespace InvestmentHub.ServerApplication.Managers
             var accountProviders = await _accountProvidersManager.GetAccountProviderCredentials(identity, cancellationToken);
             try
             {
-                await foreach (var account in accountProviders)
+                await foreach (var account in accountProviders.WithCancellation(cancellationToken))
                 {
+                    if (!forceUpdate && account.LastSuccessfulUpdate.UtcDateTime > DateTimeOffset.UtcNow.Date)
+                    {
+                        continue;
+                    }
+
                     var providerUserName = _encryptorManager.Decrypt(account.ProviderUserName, password);
                     var providerUserPassword = _encryptorManager.Decrypt(account.ProviderUserPassword, password);
 
                     var provider = _providerContainer.GetProvider(account.ProviderName);
                     var isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
-                    if (isLoginSuccessful)
+                    if (!isLoginSuccessful)
                     {
-                        var assets = await provider.GetAssetsAsync(cancellationToken);
-                        var saveAssetsTask = assets.Select(a => SetAssetAsync(account.Email, a, cancellationToken));
-                        await Task.WhenAll(saveAssetsTask);
+                        continue;
                     }
+
+                    var assets = await provider.GetAssetsAsync(cancellationToken);
+                    var saveAssetsTask = assets.Select(a => SetAssetAsync(account.Email, a, cancellationToken));
+                    await Task.WhenAll(saveAssetsTask);
+                    await _accountProvidersManager.SetLastSuccessfulUpdate(identity, account, cancellationToken);
                 }
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
@@ -61,9 +71,9 @@ namespace InvestmentHub.ServerApplication.Managers
         public async Task<Asset> GetAssetAsync(string identity, string assetId, CancellationToken cancellationToken)
         {
             var set = await _assetSetMap.GetValueOrDefaultAsync(identity, cancellationToken);
-            if (set == null) return default;
 
             var queryable = set as IQueryableStorage<Asset>;
+            if (queryable == null) return default;
             var result = await queryable.QueryAsync(a => a.Id == assetId, a => a, 0, 1, cancellationToken);
 
             return await result.Items.FirstOrDefaultAsync(cancellationToken);
@@ -72,7 +82,7 @@ namespace InvestmentHub.ServerApplication.Managers
         public async Task<IAsyncEnumerable<Asset>> GetAssetsAsync(string identity, CancellationToken cancellationToken)
         {
             var set = await _assetSetMap.GetValueOrDefaultAsync(identity, cancellationToken);
-            return set?.AsEnumerableAsync();
+            return set?.AsEnumerableAsync(cancellationToken);
         }
 
         public async Task SetAssetAsync(string identity, Asset asset, CancellationToken cancellationToken)

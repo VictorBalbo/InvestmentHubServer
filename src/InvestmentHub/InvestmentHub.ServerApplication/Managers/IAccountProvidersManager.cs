@@ -13,6 +13,8 @@ namespace InvestmentHub.ServerApplication.Managers
 
         Task SetAccountProviderCredentials(string identity, string password, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
 
+        Task SetLastSuccessfulUpdate(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
+
         Task<bool> DeleteAccountProviderCredentials(string identity, ProviderCredentials providerCredentials, CancellationToken cancellationToken);
     }
 }

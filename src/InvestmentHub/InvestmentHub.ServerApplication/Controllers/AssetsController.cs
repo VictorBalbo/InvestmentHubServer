@@ -21,16 +21,16 @@ namespace InvestmentHub.ServerApplication.Controllers
         }
 
         [HttpGet]
-        public async Task<IAsyncEnumerable<Asset>> GetAssets(CancellationToken cancellationToken)
+        public async Task<IAsyncEnumerable<Asset>> GetOwnAssets(CancellationToken cancellationToken)
         {
             var assets = await _assetManager.GetAssetsAsync(User.Identity.Name, cancellationToken);
             return assets;
         }
 
         [HttpPost]
-        public async Task FetchAssets([FromBody]string password, CancellationToken cancellationToken)
+        public async Task FetchOwnAssets([FromBody]string password, CancellationToken cancellationToken)
         {
-            await _assetManager.GetProviderAssets(User.Identity.Name, password, cancellationToken);
+            await _assetManager.GetProviderAssets(User.Identity.Name, password, true, cancellationToken);
         }
     }
 }
