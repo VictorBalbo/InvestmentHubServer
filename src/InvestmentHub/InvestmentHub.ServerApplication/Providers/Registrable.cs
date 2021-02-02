@@ -1,6 +1,4 @@
-﻿using InvestmentHub.Providers;
-using InvestmentHub.Providers.Rico;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace InvestmentHub.ServerApplication.Providers
 {
@@ -9,8 +7,7 @@ namespace InvestmentHub.ServerApplication.Providers
         public void RegisterTo(IServiceCollection services)
         {
             services
-                .AddSingleton<IProviderContainer, ProviderContainer>()
-                .AddSingleton<IProvider, RicoProvider>();
+                .AddSingleton<IProviderFactory, ProviderFactory>();
         }
     }
 }

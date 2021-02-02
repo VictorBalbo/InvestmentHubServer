@@ -2,7 +2,7 @@
 
 namespace InvestmentHub.ServerApplication.Providers
 {
-    public interface IProviderContainer
+    public interface IProviderFactory
     {
         IProvider GetProvider(string name);
     }

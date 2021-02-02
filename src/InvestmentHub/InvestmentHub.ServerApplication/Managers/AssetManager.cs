@@ -14,17 +14,17 @@ namespace InvestmentHub.ServerApplication.Managers
     internal class AssetManager : IAssetManager
     {
         private readonly IAssetSetMap _assetSetMap;
-        private readonly IProviderContainer _providerContainer;
+        private readonly IProviderFactory _providerFactory;
         private readonly IEncryptorManager _encryptorManager;
         private readonly IAccountProvidersManager _accountProvidersManager;
 
         public AssetManager(IAssetSetMap assetSetMap,
-            IProviderContainer providerContainer,
+            IProviderFactory providerFactory,
             IEncryptorManager encryptorManager,
             IAccountProvidersManager accountProvidersManager)
         {
             _assetSetMap = assetSetMap;
-            _providerContainer = providerContainer;
+            _providerFactory = providerFactory;
             _encryptorManager = encryptorManager;
             _accountProvidersManager = accountProvidersManager;
         }
@@ -47,7 +47,7 @@ namespace InvestmentHub.ServerApplication.Managers
                     var providerUserName = _encryptorManager.Decrypt(accountProvider.ProviderUserName, password);
                     var providerUserPassword = _encryptorManager.Decrypt(accountProvider.ProviderUserPassword, password);
 
-                    var provider = _providerContainer.GetProvider(accountProvider.ProviderName);
+                    var provider = _providerFactory.GetProvider(accountProvider.ProviderName);
                     var isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
                     if (!isLoginSuccessful)
                     {
