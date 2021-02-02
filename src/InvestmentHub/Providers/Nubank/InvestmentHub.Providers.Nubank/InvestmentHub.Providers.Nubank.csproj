@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\InvestmentHub.Providers\InvestmentHub.Providers.csproj" />
+      <ProjectReference Include="..\InvestmentHub.Providers.Models.Nubank\InvestmentHub.Providers.Models.Nubank.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="QRCoder" Version="1.4.1" />
+    </ItemGroup>
+
+</Project>
