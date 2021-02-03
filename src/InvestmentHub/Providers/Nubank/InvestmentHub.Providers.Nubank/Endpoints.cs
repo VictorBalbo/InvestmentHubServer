@@ -43,11 +43,9 @@ namespace InvestmentHub.Providers.Nubank
             }
             return _appUrls.Lift;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public string Events => _authenticatedUrls?.Events;
+        public string Account => _authenticatedUrls?.Account;
         public string GraphQl => _authenticatedUrls?.Ghostflame;
 
 

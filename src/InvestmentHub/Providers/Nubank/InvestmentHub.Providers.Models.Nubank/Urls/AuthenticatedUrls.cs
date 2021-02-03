@@ -2,6 +2,7 @@
 {
     public class AuthenticatedUrls
     {
+        public AuthenticatedUrlsContainer Account { get; set; }
         public AuthenticatedUrlsContainer Events { get; set; }
         public AuthenticatedUrlsContainer Ghostflame { get; set; }
     }

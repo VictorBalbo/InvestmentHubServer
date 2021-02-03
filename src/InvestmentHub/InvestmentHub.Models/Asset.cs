@@ -28,7 +28,7 @@ namespace InvestmentHub.Models
         /// <summary>
         /// Value in the investment
         /// </summary>
-        public float Value { get; set; }
+        public double Value { get; set; }
 
         /// <summary>
         /// Type of the investment
@@ -49,11 +49,11 @@ namespace InvestmentHub.Models
         /// <summary>
         /// Percentage of the investment over the total
         /// </summary>
-        public float Alocation { get; set; }
+        public double Alocation { get; set; }
 
         /// <summary>
         /// Percentage of the investment over the total that generates income
         /// </summary>
-        public float InvestedAlocation { get; set; }
+        public double InvestedAlocation { get; set; }
     }
 }

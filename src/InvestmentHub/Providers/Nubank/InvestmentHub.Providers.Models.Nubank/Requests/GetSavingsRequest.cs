@@ -3,6 +3,6 @@
     public class GetSavingsRequest
     {
         public string Query =>
-            "{ viewer { savingsAccount { feed { id __typename title detail postDate ... on TransferInEvent { amount originAccount { name }} ... on TransferOutEvent { amount destinationAccount { name }} ... on BarcodePaymentEvent { amount }}}}}";
+            "{ viewer { savingsAccount { currentSavingsBalance { netAmount} feed { id __typename title detail postDate ... on TransferInEvent { amount originAccount { name }} ... on TransferOutEvent { amount destinationAccount { name }} ... on DebitPurchaseEvent { amount } ... on BarcodePaymentEvent { amount }}}}}";
     }
 }

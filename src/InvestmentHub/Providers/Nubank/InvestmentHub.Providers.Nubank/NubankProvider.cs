@@ -63,7 +63,7 @@ namespace InvestmentHub.Providers.Nubank
         }
 
         /// <summary>
-        /// Get user events on Nubank 
+        /// Get user credit card events on Nubank 
         /// </summary>
         /// <returns>List of events for user</returns>
         public async Task<IEnumerable<Event>> GetEventsAsync(CancellationToken cancellationToken)
@@ -80,30 +80,50 @@ namespace InvestmentHub.Providers.Nubank
             return response.Events;
         }
 
-        /// <summary>
-        /// Get user savings from Nubank 
-        /// </summary>
-        /// <returns></returns>
-        public async Task<IEnumerable<Saving>> GetSavingsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Asset>> GetAssetsAsync(CancellationToken cancellationToken)
         {
             EnsureAuthenticated();
 
             var savingsRequest = new GetSavingsRequest();
-
-            var response = await _httpClient.PostWithAuthorizationAsync<GetSavingsRequest, GetSavingsResponse>(_endpoints.GraphQl, savingsRequest, _authToken, cancellationToken);
-            
-            if (!string.IsNullOrEmpty(response.Error))
+            var getSavingsResponse = await _httpClient.PostWithAuthorizationAsync<GetSavingsRequest, GetSavingsResponse>(_endpoints.GraphQl, savingsRequest, _authToken, cancellationToken);
+            if (!string.IsNullOrEmpty(getSavingsResponse.Error))
             {
-                throw new Exception(response.Error);
+                throw new Exception(getSavingsResponse.Error);
+            }
+            
+            var getAccountsResponse = await _httpClient.GetWithAuthorizationAsync<GetAccountResponse>(_endpoints.Account, _authToken, cancellationToken);
+            if (!string.IsNullOrEmpty(getAccountsResponse.Error))
+            {
+                throw new Exception(getAccountsResponse.Error);
             }
 
-            return response.Savings;
-        }
-        
-        public async Task<IEnumerable<Asset>> GetAssetsAsync(CancellationToken cancellationToken)
-        {
-            var savings = await GetSavingsAsync(cancellationToken);
-            return null;
+            var creditCardDebit = 0
+                + getAccountsResponse.PrepaidCurrency
+                - getAccountsResponse.OpenCurrency
+                - getAccountsResponse.DueCurrency
+                - getAccountsResponse.FutureCurrency;
+            
+            return new []
+            {
+                new Asset
+                {
+                    Id = $"{ProviderName}:Saldo",
+                    ProviderName = ProviderName,
+                    AssetName = "Saldo",
+                    Type = AssetType.Balance,
+                    GeneratesIncome = true,
+                    Value = getSavingsResponse.NetAmount,
+                },
+                new Asset
+                {
+                    Id = $"{ProviderName}:Credit",
+                    ProviderName = ProviderName,
+                    AssetName = "Credit",
+                    Type = AssetType.Credit,
+                    GeneratesIncome = false,
+                    Value = creditCardDebit,
+                }
+            };
         }
 
         /// <summary>

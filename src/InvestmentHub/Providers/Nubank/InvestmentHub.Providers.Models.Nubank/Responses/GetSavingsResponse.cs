@@ -9,6 +9,9 @@ namespace InvestmentHub.Providers.Models.Nubank.Responses
 
         [JsonIgnore]
         public IEnumerable<Saving> Savings => Data.Viewer.SavingsAccount.Feed;
+        
+        [JsonIgnore]
+        public double NetAmount => Data.Viewer.SavingsAccount.CurrentSavingsBalance.NetAmount;
     }
 
     public class DataResponse
@@ -24,5 +27,12 @@ namespace InvestmentHub.Providers.Models.Nubank.Responses
     public class SavingsAccount
     {
         public IEnumerable<Saving> Feed { get; set; }
+        
+        public CurrentSavingsBalance CurrentSavingsBalance { get; set; }
+    }
+    
+    public class CurrentSavingsBalance
+    {
+        public double NetAmount { get; set; }
     }
 }

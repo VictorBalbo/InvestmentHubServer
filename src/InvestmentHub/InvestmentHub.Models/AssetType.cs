@@ -2,6 +2,7 @@
 {
     public enum AssetType
     {
+        Credit,
         Balance,
         Stock,
         FixedIncome,
