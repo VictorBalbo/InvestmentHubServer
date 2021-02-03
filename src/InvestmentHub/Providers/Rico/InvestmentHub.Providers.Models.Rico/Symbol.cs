@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace InvestmentHub.Providers.Models.Rico.Responses
+namespace InvestmentHub.Providers.Models.Rico
 {
     public class Symbol
     {

@@ -23,9 +23,9 @@ namespace InvestmentHub.Providers.Models.Rico
         }
 
         public string ProductTypeName { get; set; }
-        public float TotalValue { get; set; }
-        public float NetValue { get; set; }
-        public float Alocation { get; set; }
-        public float InvestedAlocation { get; set; }
+        public double TotalValue { get; set; }
+        public double NetValue { get; set; }
+        public double Alocation { get; set; }
+        public double InvestedAlocation { get; set; }
     }
 }
