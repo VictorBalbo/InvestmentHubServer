@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using InvestmentHub.Providers.Models.Nubank.Urls;
 
 namespace InvestmentHub.Providers.Nubank
@@ -10,8 +11,8 @@ namespace InvestmentHub.Providers.Nubank
         private readonly BaseHttpClient _client;
         private WebUrls _webUrls;
         private AppUrls _appUrls;
-        private AuthenticatedUrls _autenticatedUrls;
-        public AuthenticatedUrls AutenticatedUrls { set => _autenticatedUrls = value; }
+        private AuthenticatedUrls _authenticatedUrls;
+        public AuthenticatedUrls AuthenticatedUrls { set => _authenticatedUrls = value; }
 
         public Endpoints(BaseHttpClient httpClient)
         {
@@ -22,10 +23,10 @@ namespace InvestmentHub.Providers.Nubank
         /// Get Url to be used on login request
         /// </summary>
         /// <returns>Login Url</returns>
-        public async Task<string> GetLoginUrlAsync() {
+        public async Task<string> GetLoginUrlAsync(CancellationToken cancellationToken) {
             if (string.IsNullOrEmpty(_webUrls?.Login))
             {
-                _webUrls = await GetWebUrls();
+                _webUrls = await GetWebUrls(cancellationToken);
             }
             return _webUrls.Login;
         }
@@ -34,11 +35,11 @@ namespace InvestmentHub.Providers.Nubank
         /// Get urls to be used on login with QRCode
         /// </summary>
         /// <returns>Lift Urls</returns>
-        public async Task<string> GetLiftUrl()
+        public async Task<string> GetLiftUrl(CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_appUrls?.Lift))
             {
-                _appUrls = await GetAppUrls();
+                _appUrls = await GetAppUrls(cancellationToken);
             }
             return _appUrls.Lift;
         }
@@ -46,18 +47,18 @@ namespace InvestmentHub.Providers.Nubank
         /// <summary>
         /// 
         /// </summary>
-        public string Events => _autenticatedUrls?.Events;
-        public string GraphQl => _autenticatedUrls?.Ghostflame;
+        public string Events => _authenticatedUrls?.Events;
+        public string GraphQl => _authenticatedUrls?.Ghostflame;
 
 
-        private Task<WebUrls> GetWebUrls()
+        private Task<WebUrls> GetWebUrls(CancellationToken cancellationToken)
         {
-            return _client.GetAsync<WebUrls>(DiscoveryUrl);
+            return _client.GetAsync<WebUrls>(DiscoveryUrl, cancellationToken);
         }
 
-        private Task<AppUrls> GetAppUrls()
+        private Task<AppUrls> GetAppUrls(CancellationToken cancellationToken)
         {
-            return _client.GetAsync<AppUrls>(DiscoveryAppUrl);
+            return _client.GetAsync<AppUrls>(DiscoveryAppUrl, cancellationToken);
         }
     }
 }

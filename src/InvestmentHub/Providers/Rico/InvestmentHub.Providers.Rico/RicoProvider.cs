@@ -12,12 +12,11 @@ namespace InvestmentHub.Providers.Rico
 {
     public sealed class RicoProvider : IProvider, IDisposable
     {
-        public string ProviderName { get; }
+        public const string ProviderName = "Rico";
         private readonly BaseHttpClient _httpClient;
 
         public RicoProvider()
         {
-            ProviderName = "Rico";
             _httpClient = new HttpClient();
         }
 
@@ -95,7 +94,7 @@ namespace InvestmentHub.Providers.Rico
             switch (position.ProductType)
             {
                 case ProductType.BALANCE:
-                    return new Asset[]
+                    return new[]
                     {
                         new Asset
                         {
@@ -109,7 +108,7 @@ namespace InvestmentHub.Providers.Rico
                     };
 
                 case ProductType.TREASURY:
-                    return new Asset[]
+                    return new[]
                     {
                         new Asset
                         {
@@ -143,7 +142,7 @@ namespace InvestmentHub.Providers.Rico
                     {
                         Console.WriteLine("Error authenticating to Rico Provider");
                         Console.WriteLine(ex.Message);
-                        return new Asset[]
+                        return new[]
                         {
                             new Asset
                             {

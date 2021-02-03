@@ -8,6 +8,10 @@ namespace InvestmentHub.ServerApplication.Managers
 {
     public interface IAccountProvidersManager
     {
+        Task<ProviderCredentials> GetAccountProviderCredential(string identity, string providerName, CancellationToken cancellationToken);
+
+        Task<ProviderCredentials> GetSecuredAccountProviderCredential(string identity, string providerName, CancellationToken cancellationToken);
+        
         Task<IAsyncEnumerable<ProviderCredentials>> GetAccountProviderCredentials(string identity, CancellationToken cancellationToken);
 
         Task<IAsyncEnumerable<ProviderCredentials>> GetSecuredAccountProviderCredentials(string identity, CancellationToken cancellationToken);

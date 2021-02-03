@@ -32,7 +32,7 @@ namespace InvestmentHub.ServerApplication.Services
                     {
                         var encryptedPassword = await _passwordMap.GetValueOrDefaultAsync(accountId, cancellationToken);
                         var accountPassword = _encryptorManager.Decrypt(encryptedPassword, _configurations.SymmetricKey);
-                        await _assetManager.FetchProviderAssets(accountId, accountPassword, false, cancellationToken);
+                        await _assetManager.FetchAllProvidersAssets(accountId, accountPassword, false, cancellationToken);
                     }
                 }
                 catch (Exception e)

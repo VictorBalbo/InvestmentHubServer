@@ -24,6 +24,25 @@ namespace InvestmentHub.ServerApplication.Managers
             _passwordMap = passwordMap;
             _configurations = configurations;
         }
+        
+        public async Task<ProviderCredentials> GetAccountProviderCredential(string identity, string providerName, CancellationToken cancellationToken)
+        {
+            Guard.Argument(identity).NotNull().NotEmpty();
+
+            var accountProviders = await _accountProvidersSetMap.QueryAsync(
+                p => p.Email == identity && p.ProviderName == providerName,
+                p => p,
+                0,
+                1,
+                cancellationToken);
+            return await accountProviders.FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<ProviderCredentials> GetSecuredAccountProviderCredential(string identity, string providerName, CancellationToken cancellationToken)
+        {
+            var accountProviders = await GetAccountProviderCredential(identity, providerName, cancellationToken);
+            return accountProviders.RemoveSensitiveInformation();
+        }
 
         public async Task<IAsyncEnumerable<ProviderCredentials>> GetAccountProviderCredentials(string identity, CancellationToken cancellationToken)
         {

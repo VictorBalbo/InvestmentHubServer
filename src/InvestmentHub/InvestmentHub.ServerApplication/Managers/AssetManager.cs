@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using InvestmentHub.Providers;
 using Take.Elephant;
 
 namespace InvestmentHub.ServerApplication.Managers
@@ -29,7 +30,7 @@ namespace InvestmentHub.ServerApplication.Managers
             _accountProvidersManager = accountProvidersManager;
         }
         
-        public async Task<bool> FetchProviderAssets(string identity, string password, bool forceUpdate, CancellationToken cancellationToken)
+        public async Task<bool> FetchAllProvidersAssets(string identity, string password, bool forceUpdate, CancellationToken cancellationToken)
         {
             Guard.Argument(identity).NotNull().NotEmpty();
             Guard.Argument(password).NotNull().NotEmpty();
@@ -44,25 +45,7 @@ namespace InvestmentHub.ServerApplication.Managers
                         continue;
                     }
 
-                    var providerUserName = _encryptorManager.Decrypt(accountProvider.ProviderUserName, password);
-                    var providerUserPassword = _encryptorManager.Decrypt(accountProvider.ProviderUserPassword, password);
-
-                    var provider = _providerFactory.GetProvider(accountProvider.ProviderName);
-                    var isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
-                    if (!isLoginSuccessful)
-                    {
-                        continue;
-                    }
-
-                    var assets = await provider.GetAssetsAsync(cancellationToken);
-                    var dateTimeNow = DateTimeOffset.UtcNow;
-                    var saveAssetsTask = assets.Select(a =>
-                    {
-                        a.StorageDate = dateTimeNow;
-                        return SetAssetAsync(accountProvider.Email, a, cancellationToken);
-                    });
-                    await Task.WhenAll(saveAssetsTask);
-                    await _accountProvidersManager.SetLastSuccessfulUpdate(identity, accountProvider, dateTimeNow, cancellationToken);
+                    await FetchProviderAssets(accountProvider, password, null, cancellationToken);
                 }
                 return true;
             }
@@ -71,6 +54,38 @@ namespace InvestmentHub.ServerApplication.Managers
                 Console.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        public async Task<bool> FetchProviderAssets(ProviderCredentials accountProvider, string password, string code, CancellationToken cancellationToken)
+        {
+            var providerUserName = _encryptorManager.Decrypt(accountProvider.ProviderUserName, password);
+            var providerUserPassword = _encryptorManager.Decrypt(accountProvider.ProviderUserPassword, password);
+
+            var provider = _providerFactory.GetProvider(accountProvider.ProviderName);
+            bool isLoginSuccessful;
+            if (!string.IsNullOrEmpty(code) && provider is ISecureProvider secureProvider)
+            {
+                isLoginSuccessful = await secureProvider.LoginAsync(providerUserName, providerUserPassword, code, cancellationToken);
+            }
+            else
+            {
+                isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
+            }
+            if (!isLoginSuccessful)
+            {
+                return false;
+            }
+
+            var assets = await provider.GetAssetsAsync(cancellationToken);
+            var dateTimeNow = DateTimeOffset.UtcNow;
+            var saveAssetsTask = assets.Select(a =>
+            {
+                a.StorageDate = dateTimeNow;
+                return SetAssetAsync(accountProvider.Email, a, cancellationToken);
+            });
+            await Task.WhenAll(saveAssetsTask);
+            await _accountProvidersManager.SetLastSuccessfulUpdate(accountProvider.Email, accountProvider, dateTimeNow, cancellationToken);
+            return true;
         }
 
         public async Task<Asset> GetAssetAsync(string identity, string assetId, CancellationToken cancellationToken)

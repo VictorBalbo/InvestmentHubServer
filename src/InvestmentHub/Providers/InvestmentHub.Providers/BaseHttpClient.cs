@@ -18,7 +18,8 @@ namespace InvestmentHub.Providers
             _httpClient = new HttpClient();
             _serializerOptions = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreNullValues = true
             };
 
             // ReSharper disable once VirtualMemberCallInConstructor

@@ -15,7 +15,9 @@ namespace InvestmentHub.ServerApplication.Managers
         /// <param name="forceUpdate"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<bool> FetchProviderAssets(string identity, string password, bool forceUpdate, CancellationToken cancellationToken);
+        Task<bool> FetchAllProvidersAssets(string identity, string password, bool forceUpdate, CancellationToken cancellationToken);
+        
+        Task<bool> FetchProviderAssets(ProviderCredentials accountProvider, string password, string code, CancellationToken cancellationToken);
 
         Task<IAsyncEnumerable<Asset>> GetAllAssetsAsync(string identity, CancellationToken cancellationToken);
 

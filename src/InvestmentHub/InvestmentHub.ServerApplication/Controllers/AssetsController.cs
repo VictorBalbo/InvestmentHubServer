@@ -13,17 +13,19 @@ namespace InvestmentHub.ServerApplication.Controllers
     public class AssetsController : ControllerBase
     {
         private readonly IAssetManager _assetManager;
+        private readonly IAccountProvidersManager _accountProvidersManager;
 
-        public AssetsController(IAssetManager assetManager)
+        public AssetsController(IAssetManager assetManager, IAccountProvidersManager accountProvidersManager)
         {
             _assetManager = assetManager;
+            _accountProvidersManager = accountProvidersManager;
         }
         
         [Route(UriTemplates.ASSET)]
         [HttpGet]
         public async Task<Asset> GetOwnAsset(string assetId, CancellationToken cancellationToken)
         {
-            var assets = await _assetManager.GetAssetAsync(User.Identity.Name, assetId, cancellationToken);
+            var assets = await _assetManager.GetAssetAsync(User.Identity?.Name, assetId, cancellationToken);
             return assets;
         }
 
@@ -31,7 +33,7 @@ namespace InvestmentHub.ServerApplication.Controllers
         [HttpGet]
         public async Task<IAsyncEnumerable<Asset>> GetOwnAssets(CancellationToken cancellationToken)
         {
-            var assets = await _assetManager.GetAllAssetsAsync(User.Identity.Name, cancellationToken);
+            var assets = await _assetManager.GetAllAssetsAsync(User.Identity?.Name, cancellationToken);
             return assets;
         }
         
@@ -39,15 +41,17 @@ namespace InvestmentHub.ServerApplication.Controllers
         [HttpGet]
         public async Task<IEnumerable<Asset>> GetOwnCurrentAssets(CancellationToken cancellationToken)
         {
-            var assets = await _assetManager.GetCurrentAssetsAsync(User.Identity.Name, cancellationToken);
+            var assets = await _assetManager.GetCurrentAssetsAsync(User.Identity?.Name, cancellationToken);
             return assets;
         }
         
         [Route(UriTemplates.ASSETS)]
         [HttpPost]
-        public async Task FetchOwnAssets([FromBody]string password, CancellationToken cancellationToken)
+        public async Task FetchOwnProviderForAssets([FromBody]UpdateAssetRequest request, CancellationToken cancellationToken)
         {
-            await _assetManager.FetchProviderAssets(User.Identity.Name, password, true, cancellationToken);
+            var accountProvider = await _accountProvidersManager.GetAccountProviderCredential(User.Identity?.Name, request.ProviderName,
+                cancellationToken);
+            await _assetManager.FetchProviderAssets(accountProvider, request.UserPassword, request.SecureCode, cancellationToken);
         }
     }
 }
