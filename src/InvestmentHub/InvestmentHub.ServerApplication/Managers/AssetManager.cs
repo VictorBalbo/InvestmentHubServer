@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using InvestmentHub.Providers;
 using Take.Elephant;
 
 namespace InvestmentHub.ServerApplication.Managers
@@ -62,15 +61,7 @@ namespace InvestmentHub.ServerApplication.Managers
             var providerUserPassword = _encryptorManager.Decrypt(accountProvider.ProviderUserPassword, password);
 
             var provider = _providerFactory.GetProvider(accountProvider.ProviderName);
-            bool isLoginSuccessful;
-            if (!string.IsNullOrEmpty(code) && provider is ISecureProvider secureProvider)
-            {
-                isLoginSuccessful = await secureProvider.LoginAsync(providerUserName, providerUserPassword, code, cancellationToken);
-            }
-            else
-            {
-                isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, cancellationToken);
-            }
+            var isLoginSuccessful = await provider.LoginAsync(providerUserName, providerUserPassword, code, cancellationToken);
             if (!isLoginSuccessful)
             {
                 return false;

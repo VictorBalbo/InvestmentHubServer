@@ -38,7 +38,7 @@ namespace InvestmentHub.Providers.Rico
             }
         }
 
-        public async Task<bool> LoginAsync(string userName, string userPassword, CancellationToken cancellationToken)
+        public async Task<bool> LoginAsync(string userName, string userPassword, string code, CancellationToken cancellationToken)
         {
             try
             {
@@ -56,7 +56,8 @@ namespace InvestmentHub.Providers.Rico
                     Username = userName,
                     SessionId = getKeyboardRequest.SessionId,
                     Token = getKeyboardResponse.Token,
-                    Password = GetPasswordFromKeyboard(userPassword, getKeyboardResponse)
+                    Password = GetPasswordFromKeyboard(userPassword, getKeyboardResponse),
+                    OtpToken = code,
                 };
                 await _httpClient.PostAsync(ProviderUrls.AUTHENTICATE, authenticateRequest, cancellationToken);
                 return true;

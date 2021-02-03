@@ -10,7 +10,7 @@ using InvestmentHub.Providers.Models.Nubank.Responses;
 
 namespace InvestmentHub.Providers.Nubank
 {
-    public class NubankProvider : ISecureProvider
+    public class NubankProvider : IProvider
     {
         public const string ProviderName = "Nubank";
         
@@ -28,22 +28,6 @@ namespace InvestmentHub.Providers.Nubank
         }
 
         /// <summary>
-        /// Login to Nubank API
-        /// </summary>
-        /// <param name="userName">User identifier on nubank, usually the CPF</param>
-        /// <param name="userPassword">User password</param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>
-        ///  Returns 'true' for successful login and 'false' for need QRCode authentication
-        /// </returns>
-        public async Task<bool> LoginAsync(string userName, string userPassword, CancellationToken cancellationToken)
-        {
-            await GetAuthTokenAsync(userName, userPassword, cancellationToken);
-
-            return _endpoints.Events != null;
-        }
-
-        /// <summary>
         /// Login to Nubank using QRCode authentication
         /// </summary>
         /// <param name="userName">User identifier on nubank, usually the CPF</param>
@@ -56,6 +40,11 @@ namespace InvestmentHub.Providers.Nubank
         public async Task<bool> LoginAsync(string userName, string userPassword, string code, CancellationToken cancellationToken)
         {
             await GetAuthTokenAsync(userName, userPassword, cancellationToken);
+            
+            if (string.IsNullOrEmpty(code))
+            {
+                return _endpoints.Events != null;
+            }
 
             var body = new AuthenticationRequest
             {
