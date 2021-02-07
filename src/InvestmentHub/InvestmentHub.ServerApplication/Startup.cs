@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading;
 
 namespace InvestmentHub.ServerApplication
@@ -32,8 +33,17 @@ namespace InvestmentHub.ServerApplication
 
             services
                 .AddMvc()
-                .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true)
+                .AddJsonOptions(o =>
+                {
+                    o.JsonSerializerOptions.IgnoreNullValues = true;
+                    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                })
                 .AddControllersAsServices();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Access-Control-Allow-Headers", policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
 
             var key = Encoding.ASCII.GetBytes(_configurations.SymmetricKey);
             services.AddAuthentication(x =>
@@ -49,7 +59,7 @@ namespace InvestmentHub.ServerApplication
                     {
                         var cancellationTokenSource = new CancellationTokenSource(_configurations.DefaultCancellationTokenExpiration);
                         var accountManager = context.HttpContext.RequestServices.GetRequiredService<IAccountManager>();
-                        var accountEmail = context.Principal.Identity.Name;
+                        var accountEmail = context.Principal?.Identity?.Name;
                         var account = await accountManager.GetAccountAsync(accountEmail, cancellationTokenSource.Token);
                         if (account == null)
                         {
@@ -81,6 +91,8 @@ namespace InvestmentHub.ServerApplication
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(option => option.AllowAnyOrigin().AllowAnyHeader().WithMethods());
 
             app.UseAuthentication();
             app.UseAuthorization();
