@@ -69,6 +69,15 @@ namespace InvestmentHub.ServerApplication.Managers
 
             var assets = await provider.GetAssetsAsync(cancellationToken);
             var dateTimeNow = DateTimeOffset.UtcNow;
+
+            if (accountProvider.LastSuccessfulUpdate.Date == dateTimeNow.Date)
+            {
+                var sameDayAssets = await GetCurrentAssetsForProviderAsync(accountProvider.Email, accountProvider, cancellationToken);
+                var deleteAssetsTasks =
+                    sameDayAssets.Select(a => DeleteAssetAsync(accountProvider.Email, a, cancellationToken));
+                await Task.WhenAll(deleteAssetsTasks);
+            }
+
             var saveAssetsTask = assets.Select(a =>
             {
                 a.StorageDate = dateTimeNow;
@@ -119,6 +128,22 @@ namespace InvestmentHub.ServerApplication.Managers
             return assets.SelectMany(a => a.Items.ToEnumerable());
         }
 
+        public async Task<IEnumerable<Asset>> GetCurrentAssetsForProviderAsync(string identity, ProviderCredentials provider, CancellationToken cancellationToken)
+        {
+            Guard.Argument(provider).NotNull();
+            
+            var assets = await _assetSetMap.QueryAsync(
+                a =>
+                    a.Identity == identity &&
+                    a.ProviderName == provider.ProviderName &&
+                    a.StorageDate == provider.LastSuccessfulUpdate,
+                a => a,
+                0,
+                1000,
+                cancellationToken);
+            
+            return assets.ToEnumerable();
+        }
         public async Task SetAssetAsync(string identity, Asset asset, CancellationToken cancellationToken)
         {
             await _assetSetMap.AddItemAsync(identity, asset, cancellationToken);
