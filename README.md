@@ -1,6 +1,8 @@
 # Investment Hub Server
 
-This is a side project to fetch for data in different investment brokers/banks and aggregate them into a single source of data for personal analysis. This project is the server side that will be used by the [InvestmentHubPortal](https://github.com/VictorBalbo/InvestmentHubPortal)
+This is a side project to fetch for data in different investment brokers/banks and aggregate them into a single source of data for personal analysis. This project is the server side that will be used by the [InvestmentHubPortal](https://github.com/VictorBalbo/InvestmentHubPortal).
+
+Right now the application is running on azure and can be accessed from [here](https://investmenthub.azurewebsites.net/).
 
 ## Integrations 
 Right now the system is successfully integrated to:
@@ -8,5 +10,5 @@ Right now the system is successfully integrated to:
 2. Nubank, being able to get the balance from Nuconta and the value of the credit card debt (Integration was inspired on this [repo](https://github.com/lira92/nubank-dotnet)). *Nubank provider uses a 2 factor authentication, so to fetch data from the provider, is necessary to scan a QrCode inside Nubank App before sending the request.*
 
 ## Roadmap
-* Find a way to update providers assets automatically for the providers that use 2 factor authentication.
+* Find a way to update providers assets automatically for the providers that use 2 factor authentication. (For nubank its possible to use the certificate authentication like exemplified [here](https://github.com/andreroggeri/pynubank)).
 * Change and forgot my password endpoits.
