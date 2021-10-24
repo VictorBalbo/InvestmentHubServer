@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PuppeteerSharp" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\InvestmentHub.Providers\InvestmentHub.Providers.csproj" />
+    <ProjectReference Include="..\InvestmentHub.Providers.Models.NuInvest\InvestmentHub.Providers.Models.NuInvest.csproj" />
+  </ItemGroup>
+
+</Project>

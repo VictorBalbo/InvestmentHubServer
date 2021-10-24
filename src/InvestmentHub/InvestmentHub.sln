@@ -19,9 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Models", "Inv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.ServerApplication", "InvestmentHub.ServerApplication\InvestmentHub.ServerApplication.csproj", "{B12E23B7-D8BE-4DC1-8F8D-7DCA58BB835B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models.Nubank", "Providers\Nubank\InvestmentHub.Providers.Models.Nubank\InvestmentHub.Providers.Models.Nubank.csproj", "{93184565-AC49-467C-BD01-34103E5EC0BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers.Models.Nubank", "Providers\Nubank\InvestmentHub.Providers.Models.Nubank\InvestmentHub.Providers.Models.Nubank.csproj", "{93184565-AC49-467C-BD01-34103E5EC0BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Nubank", "Providers\Nubank\InvestmentHub.Providers.Nubank\InvestmentHub.Providers.Nubank.csproj", "{6C19B158-0263-43DC-9CAF-26379FFB1872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentHub.Providers.Nubank", "Providers\Nubank\InvestmentHub.Providers.Nubank\InvestmentHub.Providers.Nubank.csproj", "{6C19B158-0263-43DC-9CAF-26379FFB1872}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.NuInvest", "Providers\Nubank\InvestmentHub.Providers.NuInvest\InvestmentHub.Providers.NuInvest.csproj", "{597DA1C0-2DD3-48E5-B4A5-28F06AF10141}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvestmentHub.Providers.Models.NuInvest", "Providers\Nubank\InvestmentHub.Providers.Models.NuInvest\InvestmentHub.Providers.Models.NuInvest.csproj", "{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{6C19B158-0263-43DC-9CAF-26379FFB1872}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C19B158-0263-43DC-9CAF-26379FFB1872}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C19B158-0263-43DC-9CAF-26379FFB1872}.Release|Any CPU.Build.0 = Release|Any CPU
+		{597DA1C0-2DD3-48E5-B4A5-28F06AF10141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{597DA1C0-2DD3-48E5-B4A5-28F06AF10141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{597DA1C0-2DD3-48E5-B4A5-28F06AF10141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{597DA1C0-2DD3-48E5-B4A5-28F06AF10141}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +81,8 @@ Global
 		{222385C0-8F16-461A-A01E-BF3AA424D0E6} = {1EADF3E7-8787-43BF-BB05-F47F9CD279B4}
 		{93184565-AC49-467C-BD01-34103E5EC0BE} = {222385C0-8F16-461A-A01E-BF3AA424D0E6}
 		{6C19B158-0263-43DC-9CAF-26379FFB1872} = {222385C0-8F16-461A-A01E-BF3AA424D0E6}
+		{597DA1C0-2DD3-48E5-B4A5-28F06AF10141} = {222385C0-8F16-461A-A01E-BF3AA424D0E6}
+		{D733DBE1-C014-4C1B-B9B9-3BCE0F463F42} = {222385C0-8F16-461A-A01E-BF3AA424D0E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70C53D03-F56B-465D-BC43-0386B1305CDA}
