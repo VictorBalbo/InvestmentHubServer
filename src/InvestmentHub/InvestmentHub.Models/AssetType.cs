@@ -7,6 +7,7 @@
         Stock,
         FixedIncome,
         Fund,
+        PensionFund,
         Unknown,
     }
 }

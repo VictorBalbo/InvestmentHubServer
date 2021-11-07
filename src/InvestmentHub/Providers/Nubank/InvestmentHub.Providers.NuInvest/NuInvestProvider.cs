@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using InvestmentHub.Models;
+using InvestmentHub.Providers.Models.NuInvest;
 using InvestmentHub.Providers.Models.NuInvest.Requests;
 using PuppeteerSharp;
 
@@ -30,7 +33,7 @@ namespace InvestmentHub.Providers.NuInvest
                 await DownloadBrowser();
             }
 
-            await Authenticate(userName, userPassword);
+            await Authenticate(userName, userPassword, code);
 
             return _authToken != null;
         }
@@ -38,8 +41,7 @@ namespace InvestmentHub.Providers.NuInvest
         public async Task<IEnumerable<Asset>> GetAssetsAsync(CancellationToken cancellationToken)
         {
             var getPositionResponse = await _httpClient.GetWithAuthorizationAsync<GetPositionResponse>(ProviderUrls.GET_POSITION, _authToken, cancellationToken);
-
-            return new[]
+            var assets = new List<Asset>
             {
                 new Asset
                 {
@@ -51,6 +53,10 @@ namespace InvestmentHub.Providers.NuInvest
                     Value = getPositionResponse.EasyBalance,
                 },
             };
+            assets.AddRange(getPositionResponse.Investments?.Select(GetAssetsFromPosition));
+
+            return assets
+                .Where(a => a != null);
         }
 
         private async Task DownloadBrowser()
@@ -64,33 +70,70 @@ namespace InvestmentHub.Providers.NuInvest
         /// <param name="userName"></param>
         /// <param name="userPassword"></param>
         /// <returns></returns>
-        private async Task Authenticate(string userName, string userPassword)
+        private async Task Authenticate(string userName, string userPassword, string optCode = null)
         {
             var browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
                 Headless = false,
             });
 
-            var page = await browser.NewPageAsync();
-            await page.GoToAsync(ProviderUrls.AUTHENTICATE);
-            await page.TypeAsync(AuthenticationRequest.UserNameSelector, userName);
-            await page.TypeAsync(AuthenticationRequest.PasswordSelector, userPassword);
-            await page.Keyboard.PressAsync(AuthenticationRequest.EnterKey);
-            await ExtractAuthToken(page);
-
-            if (_authToken == null)
+            using var page = await browser.NewPageAsync();
+            await page.SetRequestInterceptionAsync(true);
+            page.Request += async (sender, e) =>
             {
-                await page.WaitForNavigationAsync();
-                await ExtractAuthToken(page);
-            }
+                var authenticationRequest = new AuthenticationRequest(userName, userPassword, optCode);
+                var payload = new Payload
+                {
+                    Method = HttpMethod.Post,
+                    Headers = authenticationRequest.GetHeaders(),
+                    PostData = authenticationRequest.BuildFormValues(),
+                };
+                await e.Request.ContinueAsync(payload);
+            };
+            var response = await page.GoToAsync(ProviderUrls.AUTHENTICATE);
+            var responseAuthenticate = await response.JsonAsync<GetAuthenticationResponse>();
+
+            var responseJson = await response.JsonAsync();
+            _authToken = responseJson.Value<string>("access_token");
 
             await browser.CloseAsync();
         }
 
-        private async Task ExtractAuthToken(Page page)
+        private Asset GetAssetsFromPosition(Investment investment)
         {
-            var localStorage = await page.EvaluateFunctionAsync<Dictionary<string, string>>("async () => Object.assign({}, window.localStorage)");
-            localStorage?.TryGetValue("access_token", out _authToken);
+            if (investment.GrossValue == 0)
+            {
+                return null;
+            }
+
+            var asset = new Asset
+            {
+                ProviderName = ProviderName,
+                GeneratesIncome = true,
+                Value = investment.GrossValue,
+                Type = investment.InvestmentType.GetEquivalentAssetType(),
+            };
+
+            switch (investment.InvestmentType.Id)
+            {
+                case InvestmentTypeEnum.TREASURY:
+                case InvestmentTypeEnum.FIXED_INCOME:
+                    asset.Id = $"{ProviderName}:{investment.CustodyId}";
+                    asset.AssetName = $"{investment.SecurityNameType} {investment.NickName} - {investment.Rentability}";
+                    return asset;
+
+                case InvestmentTypeEnum.STOCK:
+                case InvestmentTypeEnum.ETF:
+                case InvestmentTypeEnum.FII:
+                    asset.Id = $"{ProviderName}:{investment.StockCode}";
+                    asset.AssetName = $"{investment.SecurityType} {investment.NickName}";
+                    return asset;
+
+                default:
+                    asset.Id = $"{ProviderName}:{investment.CustodyId}";
+                    asset.AssetName = $"{investment.SecurityType} {investment.NickName}";
+                    return asset;
+            }
         }
     }
 }

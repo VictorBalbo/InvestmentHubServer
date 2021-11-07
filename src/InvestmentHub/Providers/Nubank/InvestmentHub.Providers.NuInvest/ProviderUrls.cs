@@ -5,7 +5,7 @@
         /// <summary>
         /// Used to authenticate on Nuinvest
         /// </summary>
-        internal const string AUTHENTICATE = "https://www.nuinvest.com.br/autenticacao/";
+        internal const string AUTHENTICATE = "https://www.nuinvest.com.br/api/auth/v3/security/token";
 
         /// <summary>
         /// Used to get details from provider wallet

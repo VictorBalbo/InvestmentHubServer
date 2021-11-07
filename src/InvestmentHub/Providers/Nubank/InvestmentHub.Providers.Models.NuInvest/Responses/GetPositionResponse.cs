@@ -27,8 +27,8 @@ namespace InvestmentHub.Providers.Models.NuInvest.Requests
         [JsonPropertyName("investmentPortfolio")]
         public IEnumerable<InvestmentPortifolio> InvestmentPortfolio { get; set; }
 
-        //[JsonPropertyName("investments")]
-        //public string investments: [] { get; set; }
+        [JsonPropertyName("investments")]
+        public IEnumerable<Investment> Investments { get; set; }
 
         [JsonPropertyName("investmentsQuantity")]
         public double InvestmentsQuantity { get; set; }
